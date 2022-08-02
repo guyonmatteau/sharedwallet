@@ -1,7 +1,6 @@
 .PHONY: chain
 
-# COMMANDS
-
+# targets
 chain:
 	npx ganache-cli --deterministic
 
