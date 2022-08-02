@@ -11,3 +11,6 @@
 node_modules/
 
 
+# ignore openzeppelin files except project 
+.openzeppelin
+!.openzeppelin/project.json
