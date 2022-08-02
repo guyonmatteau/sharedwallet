@@ -1,0 +1,13 @@
+# MacOS
+.DS_Store
+
+# vs code
+.vscode/*
+!.vscode/settings.json.default
+!.vscode/launch.json.default
+!.vscode/extensions.json.default
+
+# node modules
+node_modules/
+
+

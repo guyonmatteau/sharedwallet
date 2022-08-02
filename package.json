@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "@openzeppelin/cli": "^2.8.2",
+    "ganache-cli": "^6.12.2"
+  }
+}
