@@ -8,10 +8,10 @@
 !.vscode/extensions.json.default
 
 # node modules and build
-node_modules/
-build/
+node_modules/*
+build/*
 
 
 # ignore openzeppelin files except project 
-.openzeppelin/
+.openzeppelin/*
 !.openzeppelin/project.json
