@@ -27,7 +27,8 @@ contract MyMapping {
     }
 
     function getValue() public pure returns(uint) {
-        return 2;
+        uint val = 2;
+        return val;
     }
 
 }
