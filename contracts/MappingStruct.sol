@@ -26,7 +26,7 @@ contract MyMapping {
 
     }
 
-    function getValue() public view returns(uint) {
+    function getValue() public pure returns(uint) {
         return 2;
     }
 

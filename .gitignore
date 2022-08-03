@@ -15,3 +15,7 @@ build/*
 # ignore openzeppelin files except project 
 .openzeppelin/*
 !.openzeppelin/project.json
+
+# Hardhat
+cache/
+artifacts/
