@@ -1,10 +1,13 @@
 {
   "devDependencies": {
+    "@nomiclabs/hardhat-truffle5": "^2.0.6",
+    "@nomiclabs/hardhat-web3": "^2.0.0",
     "@openzeppelin/cli": "^2.8.2",
     "@openzeppelin/test-environment": "^0.1.9",
     "chai": "^4.3.6",
     "ganache-cli": "^6.12.2",
-    "hardhat": "^2.10.1"
+    "hardhat": "^2.10.1",
+    "web3": "^1.7.5"
   },
   "dependencies": {
     "@mangrovedao/hardhat-test-solidity": "^0.0.17"

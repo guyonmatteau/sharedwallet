@@ -1,5 +1,5 @@
-const MyMapping = artifacts.require("MyMapping");
+const MappingStruct = artifacts.require("MappingStruct");
 
 module.exports = function (deployer) {
-  deployer.deploy(MyMapping);
+  deployer.deploy(MappingStruct);
 };

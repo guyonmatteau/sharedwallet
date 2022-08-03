@@ -4,13 +4,13 @@ pragma solidity ^0.6.3;
 import "truffle/Assert.sol";
 import "../contracts/MappingStruct.sol";
 
-contract TestMyMapping {
+contract TestMappingStruct {
 
-    MyMapping m;
+    MappingStruct m;
 
     function _beforeAll() public {
         // create new instance of contract
-        m = new MyMapping();
+        m = new MappingStruct();
     }
 
     uint val = 2;
