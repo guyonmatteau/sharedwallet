@@ -1,6 +1,9 @@
 {
   "devDependencies": {
     "@openzeppelin/cli": "^2.8.2",
-    "ganache-cli": "^6.12.2"
+    "@openzeppelin/test-environment": "^0.1.9",
+    "chai": "^4.3.6",
+    "ganache-cli": "^6.12.2",
+    "hardhat": "^2.10.1"
   }
 }
