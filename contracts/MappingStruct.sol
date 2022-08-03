@@ -25,4 +25,9 @@ contract MyMapping {
         balanceReceived[msg.sender].totalBalance += msg.value;
 
     }
+
+    function getValue() public view returns(uint) {
+        return 2;
+    }
+
 }

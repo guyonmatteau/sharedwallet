@@ -1,6 +1,8 @@
 {
   "manifestVersion": "2.2",
-  "contracts": {},
+  "contracts": {
+    "MyMapping": "MyMapping"
+  },
   "dependencies": {},
   "name": "sandbox",
   "version": "0.0.1",
