@@ -1,10 +1,14 @@
 # solidtysandbox
 
-Repo to play around with solidity on local machine instead of Remix
+Repo to play around with solidity on local machine instead of Remix. 
 
 To do: currently the repo contains multiple frameworks: truffle, hardhat, OpenZeppelin, ganache-cli. At least choose either truffle or hardhat.
 
 ## Development
+
+FYI, multiple commands below are added as target to the Makefile for convenience. Run e.g. `make chain` to run your local blockchain.
+
+### Setup
 
 To deploy and test the contracts locally you can run your own local blockchain with Ganache (previously Ganache CLI). Install with
 ```
@@ -25,3 +29,10 @@ Deploying Solidity contracts from the `contracts/` folder is then done by
 npx openzeppelin deploy --kind upgradeable --network development
 ```
 which will prompt for the contract you want to deploy.
+
+### Unit testing
+
+Run JavaScript unit tests with Truffle:
+```
+truffle test test/js/*
+```
