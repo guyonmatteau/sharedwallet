@@ -1,10 +1,10 @@
 //"SPDX-License-Identifier: UNLICENSED"
 pragma solidity ^0.6.3;
 
-import "./MyMapping.sol";
-import "@mangrovedao/hardhat-test-solidity/test.sol";
+import "../contracts/MyMapping.sol";
+import "forge-std/Test.sol";
 
-contract MyMappingTest {
+contract MyMappingTest is Test {
 
     MyMapping m;
 
