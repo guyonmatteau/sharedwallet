@@ -6,7 +6,7 @@ To do: currently the repo contains multiple frameworks: truffle, hardhat, OpenZe
 
 ## Development
 
-FYI, multiple commands below are added as target to the Makefile for convenience. Run e.g. `make chain` to run your local blockchain.
+Multiple commands used below are added as target to the Makefile for convenience. Run e.g. `make chain` to run your local blockchain.
 
 ### Setup
 
