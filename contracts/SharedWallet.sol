@@ -1,35 +1,48 @@
 //"SPDX-License-Identifier: UNLICENSED"
 pragma solidity ^0.6.3;
 
-// figure out
-// emit
-// event
-// modifier
-
 contract SharedWallet {
 
     // events for returning useful stuff for user
-    event pendingTransaction();
+    // is like console.log
+    // event pendingTransaction(address indexed sender, uint amount);
 
     // struct transaction
     // we need a struct for a transaction
-    struct pendingTransaction {
-        address recipient;
-        uint256 amount;
-        uint256 votes;
-    }
+    // struct Transaction {
+    //     address recipient;
+    //     uint256 amount;
+    //     uint256 votes;
+    // }
 
     // public mapping
     // we need to keep track of al pending transactions
     // and their number of votes in a mapping
-    mapping(address => pendingTransaction) public pendingTransactions;
+    // mapping(address => Transaction) public pendingTransactions;
 
     // helper method to get transactions
-    function getTransactionValue() public view returns (uint) {
-        return pendingTransactions[msg.sender].amount;
+    // function getTransaction() external {
+    //     uint amount = 2;
+    //     emit pendingTransaction(msg.sender, amount);
+    // }
+    
+    // function myFunction() public pure returns (uint) {
+    //     uint val = 2;
+    //     return val;
+    // }
+
+    function withdrawEther(address payable recipient, uint amount) public {
+        recipient.transfer(amount);
+    } 
+
+    function getBalance() public view returns(uint) {
+        return address(this).balance;
     }
-    
-    
+
+    receive() external payable {
+    }
+
+
 
     // construct
     // during the contruct set owner,

@@ -1,11 +1,15 @@
-.PHONY: chain deploy test
+.PHONY: chain deploy upgrade test lint clean
 
-
+# blockchain
 chain:
-	npx ganache-cli --deterministic
+	npx ganache-cli --deterministic --verbose
 
 deploy:
 	npx openzeppelin deploy --kind upgradeable --network development
+
+# this only works for certain incremental changes
+upgrade: 
+	npx oz upgrade SharedWallet --network development --no-interactive
 
 # development
 test:
@@ -16,4 +20,5 @@ lint:
 
 clean:
 	rm -r build artifacts cache
+
 
