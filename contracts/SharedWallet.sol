@@ -1,47 +1,39 @@
 //"SPDX-License-Identifier: UNLICENSED"
 pragma solidity ^0.6.3;
+pragma experimental ABIEncoderV2;
 
-// challenges 
-// - people should not be able to vote twice
-// - 
 
 contract SharedWallet {
-    // events for returning useful stuff for user
-    // is like console.log
-    // event pendingTransaction(address indexed sender, uint amount);
 
-    // struct transaction
-    // we need a struct for a transaction
-    // struct Transaction {
-    //     address recipient;
-    //     uint256 amount;
-    //     uint256 votes;
-    // }
+    struct Transaction {
+        address recipient;
+        uint256 amount;
+        uint256 votes;
+    }
 
     // public mapping
     // we need to keep track of al pending transactions
     // and their number of votes in a mapping
     // mapping(address => Transaction) public pendingTransactions;
 
-    // helper method to get transactions
-    // function getTransaction() external {
-    //     uint amount = 2;
-    //     emit pendingTransaction(msg.sender, amount);
-    // }
-
     bool private _initialized;
-
     address[] public owners;
+    Transaction[] public pendingTransactions;
 
+    // on deployment set owners that are allowed to vote
+    // replaces constructor functionality (required due to Openzeppelin)
     function initialize(address[] memory _owners) public {
-        require(!_initialized, "Contract instance has already been initialized");
+        require(
+            !_initialized,
+            "Contract instance has already been initialized"
+        );
         _initialized = true;
         for (uint256 i = 0; i < _owners.length; i++) {
             owners.push(_owners[i]);
         }
     }
 
-    function getOwners() public view returns (address[] memory) {
+    function getOwners() public view retur  ns (address[] memory) {
         return owners;
     }
 
@@ -53,17 +45,24 @@ contract SharedWallet {
         return address(this).balance;
     }
 
-    receive() external payable {}
-
-    // construct
-    // during the contruct set owner,
-    // number of members,
-    // minimum number of approvals
-
     // public function
     // submit transaction that adds to list
     // of pending transactions
     // requirement: be authorized
+    function submitTransaction(address _recipient, uint256 _amount) public {
+        Transaction memory transaction = Transaction({
+            recipient: _recipient,
+            amount: _amount,
+            votes: 0
+        });
+        pendingTransactions.push(transaction);
+    }
+
+    function getTransactions() public view returns (Transaction[] memory) {
+        return pendingTransactions;
+    }
+
+    receive() external payable {}
 
     // public function
     // vote for certain transaction,
