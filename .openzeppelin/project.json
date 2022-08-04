@@ -1,7 +1,7 @@
 {
   "manifestVersion": "2.2",
   "contracts": {
-    "MyMapping": "MyMapping"
+    "SharedWallet": "SharedWallet"
   },
   "dependencies": {},
   "name": "sandbox",

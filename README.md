@@ -1,8 +1,6 @@
 # solidtysandbox
 
-Repo to play around with solidity on local machine instead of Remix. 
-
-To do: currently the repo contains multiple frameworks: truffle, hardhat, OpenZeppelin, ganache-cli. At least choose either truffle or hardhat.
+Prework for Artemis, where the goal is to develop a SharedWallet (i.e. multi-sig wallet) and deploy that to the Goerli testnet. 
 
 ## Development
 
@@ -36,3 +34,11 @@ Run JavaScript unit tests with Truffle:
 ```
 truffle test test/js/*
 ```
+
+### Essay
+
+Todo:
+- currently the repo contains multiple frameworks: truffle, hardhat, OpenZeppelin, ganache-cli. At least choose either truffle or hardhat.
+
+Findings / challenges along the way.
+- mapping does not work for maintaining transactions, unless you use the tx key (t.b.d.)

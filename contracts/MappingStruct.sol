@@ -2,33 +2,29 @@
 pragma solidity ^0.6.3;
 
 contract MappingStruct {
-
     struct Payment {
-        uint amount;
-        uint timestamp;
+        uint256 amount;
+        uint256 timestamp;
     }
-    
+
     struct Balance {
-        uint totalBalance;
-        uint numPayment;
-        mapping(uint => Payment) payments;
+        uint256 totalBalance;
+        uint256 numPayment;
+        mapping(uint256 => Payment) payments;
     }
 
     mapping(address => Balance) public balanceReceived;
-    
-    function getBalance() public view returns(uint) {
+
+    function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
 
     function sendMoney() public payable {
-        
         balanceReceived[msg.sender].totalBalance += msg.value;
-
     }
 
-    function getValue() public pure returns(uint) {
-        uint val = 2;
+    function getValue() public pure returns (uint256) {
+        uint256 val = 2;
         return val;
     }
-
 }
