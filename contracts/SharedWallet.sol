@@ -2,6 +2,9 @@
 pragma solidity ^0.6.3;
 
 contract SharedWallet {
+    
+    // struct transaction
+    // we need a struct for a transaction
 
     // public mapping
     // we need to keep track of al pending transactions
