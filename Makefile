@@ -1,15 +1,19 @@
 .PHONY: chain deploy upgrade test lint clean
 
-# blockchain
+## GLOBALS
+CONTRACT=SharedWallet
+NETWORK=development
+
+## COMMANDS
 chain:
 	npx ganache-cli --deterministic --verbose
 
 deploy:
-	npx openzeppelin deploy --kind upgradeable --network development
+	npx openzeppelin deploy $(CONTRACT) --kind upgradeable --network $(NETWORK)
 
-# this only works for certain incremental changes
+# this only works for certain changes
 upgrade: 
-	npx oz upgrade SharedWallet --network development --no-interactive
+	npx oz upgrade $(CONTRACT) --network $(NETWORK) --no-interactive
 
 # development
 test:

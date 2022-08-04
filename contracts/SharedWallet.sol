@@ -1,8 +1,11 @@
 //"SPDX-License-Identifier: UNLICENSED"
 pragma solidity ^0.6.3;
 
-contract SharedWallet {
+// challenges 
+// - people should not be able to vote twice
+// - 
 
+contract SharedWallet {
     // events for returning useful stuff for user
     // is like console.log
     // event pendingTransaction(address indexed sender, uint amount);
@@ -25,24 +28,32 @@ contract SharedWallet {
     //     uint amount = 2;
     //     emit pendingTransaction(msg.sender, amount);
     // }
-    
-    // function myFunction() public pure returns (uint) {
-    //     uint val = 2;
-    //     return val;
-    // }
 
-    function withdrawEther(address payable recipient, uint amount) public {
+    bool private _initialized;
+
+    address[] public owners;
+
+    function initialize(address[] memory _owners) public {
+        require(!_initialized, "Contract instance has already been initialized");
+        _initialized = true;
+        for (uint256 i = 0; i < _owners.length; i++) {
+            owners.push(_owners[i]);
+        }
+    }
+
+    function getOwners() public view returns (address[] memory) {
+        return owners;
+    }
+
+    function withdrawEther(address payable recipient, uint256 amount) public {
         recipient.transfer(amount);
-    } 
+    }
 
-    function getBalance() public view returns(uint) {
+    function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
 
-    receive() external payable {
-    }
-
-
+    receive() external payable {}
 
     // construct
     // during the contruct set owner,
