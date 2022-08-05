@@ -42,3 +42,11 @@ Todo:
 
 Findings / challenges along the way.
 - mapping does not work for maintaining transactions, unless you use the tx key (t.b.d.)
+
+Functional requirements
+- any of its allowed members should be able to submit a transaction
+- only wallet's members should be authorized to take part in process of submitting approving and executing
+- members should be able to revoke their approvals
+- number of members as well as min number of approvals should be set at time of contract deployment
+- someone should not be able to vote twice
+- you should be able to submit multiple transactions with the same recipient

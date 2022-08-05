@@ -8,12 +8,15 @@ NETWORK=development
 chain:
 	npx ganache-cli --deterministic --verbose
 
-deploy:
-	npx openzeppelin deploy $(CONTRACT) --kind upgradeable --network $(NETWORK)
+deploy: accounts
+	npx oz deploy $(CONTRACT) --kind upgradeable --network $(NETWORK)
 
 # this only works for certain changes
 upgrade: 
 	npx oz upgrade $(CONTRACT) --network $(NETWORK) --no-interactive
+
+accounts:
+	npx oz accounts --network $(NETWORK)
 
 # development
 test:
