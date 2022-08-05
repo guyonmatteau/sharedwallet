@@ -52,7 +52,7 @@ Functional requirements
 - you should be able to submit multiple transactions with the same recipient
 
 Learnings
-- you can and should use an address as index
+- you can and should use an address as index (this way you keep track for all the owners what their vote is)
 - with modifiers you set permissions for certain functions
 
 Types:
