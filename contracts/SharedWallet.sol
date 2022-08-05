@@ -3,6 +3,8 @@ pragma solidity ^0.6.3;
 pragma experimental ABIEncoderV2;
 
 contract SharedWallet {
+    
+    // TODO currently it only supports 1 transaction per recipient
     struct Transaction {
         address recipient;
         uint256 amount;
@@ -12,7 +14,7 @@ contract SharedWallet {
     }
 
     bool private _initialized;
-    bool public minVotes;
+    uint public minVotes;
     address[] public owners;
     Transaction[] public pendingTransactions;
 
@@ -40,18 +42,6 @@ contract SharedWallet {
         }
     }
 
-    function getOwners() public view returns (address[] memory) {
-        return owners;
-    }
-
-    function withdrawEther(address payable recipient, uint256 amount) public {
-        recipient.transfer(amount);
-    }
-
-    function getBalance() public view returns (uint256) {
-        return address(this).balance;
-    }
-
     // public function
     // submit transaction that adds to list
     // of pending transactions
@@ -60,17 +50,13 @@ contract SharedWallet {
         Transaction memory transaction = Transaction({
             recipient: _recipient,
             amount: _amount,
-            votes: 0
+            votes: 0,
+            executed: false
+            
         });
         pendingTransactions.push(transaction);
     }
-
-    function getTransactions() public view returns (Transaction[] memory) {
-        return pendingTransactions;
-    }
-
-    receive() external payable {}
-
+    
     // public function
     // vote for certain transaction,
     // if number of votes is equal to min number of votes,
@@ -92,24 +78,14 @@ contract SharedWallet {
                 ) {
                     pendingTransactions[i].executed = true;
                     _executeTransaction(
-                        pendingTransanctions[i].recipient,
+                        payable(pendingTransactions[i].recipient),
                         pendingTransactions[i].amount
                     );
                 }
             }
         }
     }
-
-    // get vote count for certain transaction
-    function getVotes(address _recipient) public view returns (uint256) {
-        uint256 voteCount;
-        for (uint256 i = 0; i < pendingTransactions.length; i++) {
-            if (pendingTransactions[i].recipient == _recipient) {
-                voteCount = pendingTransactions[i].votes;
-            }
-        }
-        return voteCount;
-    }
+    
 
     // public function
     // revoke vote for certain transaction
@@ -129,6 +105,8 @@ contract SharedWallet {
         }
     }
 
+    receive() external payable {}
+
     // private function
     // execute transaction
     function _executeTransaction(address payable _recipient, uint256 _amount)
@@ -136,4 +114,35 @@ contract SharedWallet {
     {
         _recipient.transfer(_amount);
     }
+
+    // utility methods
+
+    // get vote count for certain transaction
+    function getVotes(address _recipient) public view returns (uint256) {
+        uint256 voteCount;
+        for (uint256 i = 0; i < pendingTransactions.length; i++) {
+            if (pendingTransactions[i].recipient == _recipient) {
+                voteCount = pendingTransactions[i].votes;
+            }
+        }
+        return voteCount;
+    }
+
+    function getOwners() public view returns (address[] memory) {
+        return owners;
+    }
+
+    function withdrawEther(address payable recipient, uint256 amount) public {
+        recipient.transfer(amount);
+    }
+
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
+    }
+
+    // function getTransactions() public view returns (Transaction[] memory) {
+    //     return pendingTransactions;
+    // }
+
+
 }
