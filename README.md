@@ -50,3 +50,12 @@ Functional requirements
 - number of members as well as min number of approvals should be set at time of contract deployment
 - someone should not be able to vote twice
 - you should be able to submit multiple transactions with the same recipient
+
+Learnings
+- you can and should use an address as index
+- with modifiers you set permissions for certain functions
+
+Types:
+- call is view
+- send-tx is like post 
+- transfer is deposit to receive() or fallback

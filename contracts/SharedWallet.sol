@@ -9,27 +9,33 @@ contract SharedWallet {
         address recipient;
         uint256 amount;
         uint256 votes;
+        bool executed;
     }
 
-    // public mapping
-    // we need to keep track of al pending transactions
-    // and their number of votes in a mapping
-    // mapping(address => Transaction) public pendingTransactions;
-
     bool private _initialized;
+    bool public minVotes;
     address[] public owners;
     Transaction[] public pendingTransactions;
 
+    // mapping can be used as simple
+    mapping(address => bool) public isOwner;
+
     // on deployment set owners that are allowed to vote
     // replaces constructor functionality (required due to Openzeppelin)
-    function initialize(address[] memory _owners) public {
+    function initialize(address[] memory _owners, uint _minVotes) public {
         require(
             !_initialized,
             "Contract instance has already been initialized"
         );
         _initialized = true;
+
+        minVotes = _minVotes;
         for (uint i = 0; i < _owners.length; i++) {
-            owners.push(_owners[i]);
+            address owner = _owners[i];
+            isOwner[owner] = true;
+
+            // keep track of owners for convenience
+            owners.push(owner);
         }
     }
 
@@ -71,11 +77,16 @@ contract SharedWallet {
     // execute transaction
     // requirement: be authorized
     function voteTransaction(address _recipient) public {
+        require(isOwner[msg.sender], "Sender is not allowed to vote");
         for (uint i = 0; i < pendingTransactions.length; i++) {
             if (pendingTransactions[i].recipient == _recipient){
                 pendingTransactions[i].votes ++;
+
+                if pendingTransactions[i].votes >= minVotes && pendin
+
             }
         }
+
     }
 
     // get vote count for certain transaction     
@@ -99,5 +110,6 @@ contract SharedWallet {
     function _executeTransaction(address payable _recipient, uint _amount) private {
         _recipient.transfer(_amount);
     }
+
 
 }
