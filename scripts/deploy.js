@@ -1,5 +1,4 @@
-
-
+// script to deploy contract to network
 async function main () {
   // We get the contract to deploy
   const SharedWallet = await ethers.getContractFactory('SharedWallet');

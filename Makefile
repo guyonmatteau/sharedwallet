@@ -6,7 +6,7 @@ NETWORK=development
 
 ## COMMANDS
 chain:
-	npx ganache-cli --deterministic --verbose
+	npx hardhat node --verbose
 
 deploy: accounts
 	npx oz deploy $(CONTRACT) --kind upgradeable --network $(NETWORK)
@@ -19,13 +19,16 @@ accounts:
 	npx oz accounts --network $(NETWORK)
 
 # development
-test:
-	truffle test test/js/*
+test.hardhat:
+	npx hardhat test
+
+test.truffle:
+	truffle test test/*
 
 lint:
 	npx prettier --write 'contracts/**/*.sol'
 
 clean:
-	rm -r build artifacts .openzeppelin/dev-*
+	-rm -r build artifacts cache .openzeppelin/dev-*
 
 
