@@ -1,5 +1,5 @@
-const MappingStruct = artifacts.require("MappingStruct");
+const SharedWallet = artifacts.require("SharedWallet");
 
 module.exports = function (deployer) {
-  deployer.deploy(MappingStruct);
+  deployer.deploy(SharedWallet);
 };

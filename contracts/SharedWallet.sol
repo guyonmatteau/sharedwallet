@@ -13,6 +13,9 @@ contract SharedWallet {
         mapping(address => bool) approvals;
     }
 
+    // on a local testnet it's hard to get the logs
+    event Deposit(address indexed _sender, uint indexed _amount);
+
     bool private _initialized;
     uint public minVotes;
     address[] public owners;
@@ -105,7 +108,9 @@ contract SharedWallet {
         }
     }
 
-    receive() external payable {}
+    receive() external payable {
+        emit Deposit({_sender: msg.sender, _amount: msg.value});
+    }
 
     // private function
     // execute transaction

@@ -26,6 +26,6 @@ lint:
 	npx prettier --write 'contracts/**/*.sol'
 
 clean:
-	rm -r build artifacts cache
+	rm -r build artifacts .openzeppelin/dev-*
 
 

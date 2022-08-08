@@ -19,3 +19,6 @@ build/*
 # Hardhat
 cache/
 artifacts/
+
+# env
+.env

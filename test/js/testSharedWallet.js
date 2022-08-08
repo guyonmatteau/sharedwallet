@@ -1,4 +1,4 @@
-const MappingStruct = artifacts.require("MappingStruct");
+const SharedWallet = artifacts.require("SharedWallet");
 
 contract("MappingStruct", accounts => {
     it("... should do this", async function () {
