@@ -3,7 +3,6 @@ pragma solidity ^0.6.3;
 pragma experimental ABIEncoderV2;
 
 contract SharedWallet {
-    
     // TODO currently it only supports 1 transaction per recipient
     struct Transaction {
         address recipient;
@@ -14,10 +13,10 @@ contract SharedWallet {
     }
 
     // on a local testnet it's hard to get the logs
-    event Deposit(address indexed _sender, uint indexed _amount);
+    event Deposit(address indexed _sender, uint256 indexed _amount);
 
     bool private _initialized;
-    uint public minVotes;
+    uint256 public minVotes;
     address[] public owners;
     Transaction[] public pendingTransactions;
 
@@ -38,6 +37,7 @@ contract SharedWallet {
         // add owners to owners list
         for (uint256 i = 0; i < _owners.length; i++) {
             address owner = _owners[i];
+
             isOwner[owner] = true;
 
             // keep track of owners for convenience
@@ -55,11 +55,10 @@ contract SharedWallet {
             amount: _amount,
             votes: 0,
             executed: false
-            
         });
         pendingTransactions.push(transaction);
     }
-    
+
     // public function
     // vote for certain transaction,
     // if number of votes is equal to min number of votes,
@@ -88,7 +87,6 @@ contract SharedWallet {
             }
         }
     }
-    
 
     // public function
     // revoke vote for certain transaction
@@ -148,6 +146,4 @@ contract SharedWallet {
     // function getTransactions() public view returns (Transaction[] memory) {
     //     return pendingTransactions;
     // }
-
-
 }

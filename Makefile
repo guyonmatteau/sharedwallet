@@ -26,7 +26,7 @@ test.truffle:
 	truffle test test/*
 
 lint:
-	npx prettier --write 'contracts/**/*.sol'
+	npx prettier --write contracts/**/*.sol test/**
 
 clean:
 	-rm -r build artifacts cache .openzeppelin/dev-*
