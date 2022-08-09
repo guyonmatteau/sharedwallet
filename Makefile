@@ -2,29 +2,37 @@
 
 ## GLOBALS
 CONTRACT=SharedWallet
-NETWORK=development
+NETWORK=localhost
 
-## COMMANDS
+## Starting local node
 chain:
 	npx hardhat node --verbose
 
-deploy: accounts
+## Openzeppelin
+oz.deploy: oz.accounts
 	npx oz deploy $(CONTRACT) --kind upgradeable --network $(NETWORK)
 
-# this only works for certain changes
-upgrade: 
+oz.upgrade: # this only works for certain changes
 	npx oz upgrade $(CONTRACT) --network $(NETWORK) --no-interactive
 
-accounts:
+oz.accounts:
 	npx oz accounts --network $(NETWORK)
 
-# development
-test.hardhat:
+## Hardhat
+hh.deploy: hh.accounts
+	hardhat run --network localhost scripts/deploy.js
+
+hh.accounts: 
+	hardhat run --network localhost scripts/accounts.js
+
+hh.test:
 	npx hardhat test
 
-test.truffle:
+## Truffle
+truffle.test:
 	truffle test test/*
 
+## Development
 lint:
 	npx prettier --write contracts/**/*.sol test/**
 

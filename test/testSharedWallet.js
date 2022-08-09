@@ -1,42 +1,48 @@
 const { assert } = require("chai");
+const lodash = require('lodash');
 
 const SharedWallet = artifacts.require("SharedWallet");
 
 contract("SharedWallet", (accounts) => {
-  let deployer = accounts[0];
-  let owner = accounts[1];
+  let deployedOwners = accounts.slice(0, 2);
+  const nullAddress = "0x0000000000000000000000000000000000000000";
 
+  it("should throw if any of the owners is the null address", async function () {
+    const SharedWallet = await ethers.getContractFactory("SharedWallet");
 
-//   it("should not accept the zero address as owner", async function () {
+    try {
+      const walletInstance = await SharedWallet.deploy([nullAddress], 1);
+      assert.fail("deployment should fail");
+    } catch (err) {
+      assert.include(
+        err.message,
+        "null",
+        "Error message should contain null message information"
+      );
+    }
+  });
 
-//     const walletInstance = await SharedWallet.deployed();
+  it("should throw an error if the min number of votes is smaller than 1", async function () {
+    const SharedWallet = await ethers.getContractFactory("SharedWallet");
 
-//     const value = await walletInstance.initialize(address(0));
+    try {
+      const walletInstance = await SharedWallet.deploy(deployedOwners, 0);
+      assert.fail("deployment should fail");
+    } catch (err) {
+      assert.include(
+        err.message,
+        "number of votes",
+        "Error message should contain number of votes"
+      );
+    }
+  });
 
-//     assert.equal(2, 2, "Values don't match");
-//   });
+  it("should set the owners properly", async function () {
+    const SharedWallet = await ethers.getContractFactory("SharedWallet");
+    const walletInstance = await SharedWallet.deploy(deployedOwners, 1);
+    const walletOwners = await walletInstance.getOwners();
 
-  it("should set the owners properly", async function() {
-
-    
-    const walletInstance = await SharedWallet.deployed().initialize([deployer], 1);
-
-    owners = await walletInstance.getOwners();
-
-    assert.equal(owners, [owner]);
-
-
-  })
-      
-
-  // contract should not be able to be initialized more than once
-  it("should not be able to be initialized more than once", async function () {
-    const walletInstance = await SharedWallet.deployed();
-
-    await walletInstance
-    .initialize([deployer, owner], 1)
-    .should.be.rejectedWith("Contract instance has already been initialized")
+    lodash.isEqual(walletOwners, deployedOwners)
   });
 
 });
-

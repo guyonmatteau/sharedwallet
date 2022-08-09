@@ -15,7 +15,6 @@ contract SharedWallet {
     // on a local testnet it's hard to get the logs
     event Deposit(address indexed _sender, uint256 indexed _amount);
 
-    bool private _initialized;
     uint256 public minVotes;
     address[] public owners;
     Transaction[] public pendingTransactions;
@@ -23,21 +22,14 @@ contract SharedWallet {
     // mapping can be used as convenient list
     mapping(address => bool) public isOwner;
 
-    // on deployment set owners that are allowed to vote
-    // replaces constructor functionality (required due to Openzeppelin)
-    function initialize(address[] memory _owners, uint256 _minVotes) public {
-        require(
-            !_initialized,
-            "Contract instance has already been initialized"
-        );
-        _initialized = true;
-
+    constructor(address[] memory _owners, uint256 _minVotes) public {
+        require(_minVotes > 0, "Minimal number of votes cannot be 0");
         minVotes = _minVotes;
-
+        
         // add owners to owners list
         for (uint256 i = 0; i < _owners.length; i++) {
             address owner = _owners[i];
-
+            require(owner != address(0), "Owner address cannot be null address");
             isOwner[owner] = true;
 
             // keep track of owners for convenience

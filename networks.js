@@ -7,7 +7,7 @@ const GOERLI_PRIVATE_KEY = process.env.GOERLI_PRIVATE_KEY;
 
 module.exports = {
   networks: {
-    development: {
+    localhost: {
       protocol: 'http',
       host: 'localhost',
       port: 8545,
