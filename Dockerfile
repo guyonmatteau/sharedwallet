@@ -25,3 +25,4 @@ RUN yarn install --non-interactive --frozen-lockfile
 COPY hardhat.config.js .
 COPY contracts contracts
 COPY scripts scripts
+

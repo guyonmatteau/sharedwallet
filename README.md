@@ -1,61 +1,49 @@
-# solidtysandbox
+# Artemis Prework
 
-Prework for Artemis, where the goal is to develop a SharedWallet (i.e. multi-sig wallet) and deploy that to the Goerli testnet. 
+Artemis prework assignment 1, where the goal is to develop a SharedWallet (i.e. multi-sig wallet) and deploy that to the Goerli testnet. Address of contract:
+
+
+| Network | Address | Version |
+|---|---|---|
+| Goerli | [0x2c603db27E6BCfb652c8301f957640AE27c22c5E](https://goerli.etherscan.io/address/0x2c603db27E6BCfb652c8301f957640AE27c22c5E) | First |
+| Goerli | [0x2c603db27E6BCfb652c8301f957640AE27c22c5E](https://goerli.etherscan.io/address/0x2c603db27E6BCfb652c8301f957640AE27c22c5E) | Final submit |
+
 
 ## Development
 
-Multiple commands used below are added as target to the Makefile for convenience. Run e.g. `make chain` to run your local blockchain.
+Multiple commands used below are added as target to the Makefile for convenience. Run e.g. `make chain` to run your local node.
 
 ### Setup
 
-To deploy and test the contracts locally you can run your own local blockchain with Ganache (previously Ganache CLI). Install with
+To deploy and test the contracts locally you can run your own local blockchain with Hardhat. Install required packages with npm or yarn
 ```
-npm install -g ganache-cli
+yarn install
 ```
-and in separate terminal/shell run your local blockchain
+in separate terminal/shell run your local blockchain
 ```
-npx ganache-cli --deterministic
-```
-
-For development OpenZeppelin is used, which allow to upgrade existing contracts. This way we can adhere to software development best practices of starting with an MVP and iterate to improve the contract while maintaining the same contract address. Disadvantages of this approach are discussed in the essay. OpenZeppelin can be installed with
-```
-npm install @openzeppelin/contracts
+npx hardhat node --verbose
 ```
 
-Deploying Solidity contracts from the `contracts/` folder is then done by
+### Run unit tests
 ```
-npx openzeppelin deploy --kind upgradeable --network development
-```
-which will prompt for the contract you want to deploy.
-
-### Unit testing
-
-Run JavaScript unit tests with Truffle:
-```
-truffle test test/js/*
+npx hardhat test
 ```
 
-### Essay
+### Deploy to local node
 
-Todo:
-- currently the repo contains multiple frameworks: truffle, hardhat, OpenZeppelin, ganache-cli. At least choose either truffle or hardhat.
+Deploying Solidity contracts from the `contracts/` folder to the node that runs locally
+```
+npx hardhat run --network localhost scripts/deploy.js
+```
+### Deploy to Goerli testnet
+To deploy to the Goerli testnet, create a `.env` file in the root and add the required keys as environment variables:
+- `ALCHEMY_API_KEY` containig the API key of your Alchemy account;
+- `GOERLI_PRIVATE_KEY` containing the private key of the wallet you want to deploy to Goerli from.
+Next, to deploy run
+```
+npx hardhat run --network goerli scripts/deploy.js
+```
 
-Findings / challenges along the way.
-- mapping does not work for maintaining transactions, unless you use the tx key (t.b.d.)
+### Deploy with Docker
 
-Functional requirements
-- any of its allowed members should be able to submit a transaction
-- only wallet's members should be authorized to take part in process of submitting approving and executing
-- members should be able to revoke their approvals
-- number of members as well as min number of approvals should be set at time of contract deployment
-- someone should not be able to vote twice
-- you should be able to submit multiple transactions with the same recipient
-
-Learnings
-- you can and should use an address as index (this way you keep track for all the owners what their vote is)
-- with modifiers you set permissions for certain functions
-
-Types:
-- call is view
-- send-tx is like post 
-- transfer is deposit to receive() or fallback
+Running your local node or deployment from within a docker container has not been fully implemented yet.

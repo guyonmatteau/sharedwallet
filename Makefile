@@ -32,10 +32,10 @@ lint:
 clean:
 	-rm -r build artifacts cache .openzeppelin/dev-*
 
-### DEPLOYMENT
-build:
-	docker build -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
+### DEPLOYMENT - not implemented yet
+# build:
+# 	docker build -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
 
-run: build 
-	@docker run -it --rm $(DOCKER_ENV) $(DOCKER_PORTS) $(DOCKER_IMAGE):$(DOCKER_TAG)
+# run: build 
+# 	@docker run -it --rm $(DOCKER_ENV) $(DOCKER_PORTS) $(DOCKER_IMAGE):$(DOCKER_TAG)
  
