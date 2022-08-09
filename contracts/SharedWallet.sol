@@ -13,6 +13,7 @@ contract SharedWallet {
 
     // on a local testnet it's hard to get the logs
     event Deposit(address indexed _sender, uint256 indexed _amount);
+    event executeTransaction(address indexed _recipient, uint256 indexed _amount);
 
     uint256 public minVotes;
     address[] public owners;
@@ -71,19 +72,18 @@ contract SharedWallet {
         }
     }
 
-    // public function
     // revoke vote for certain transaction
     // requirement: only be able to revoke own vote
     // reuquirment: be authorized
-    function revokeApproval(address _recipient) public {
+    function revokeApproval(uint256 _index) public {
         require(isOwner[msg.sender], "Sender is not owner");
-        for (uint256 i = 0; i < transactions.length; i++) {
-            if (transactions[i].recipient == _recipient && transactions[i].approvals[msg.sender]) {
-                // this can be done smarter
-                transactions[i].votes--;
-                transactions[i].approvals[msg.sender] = false;
-            }
-        }
+        require(
+            transactions[_index].approvals[msg.sender],
+            "Sender has not voted yet or already revoked approval"
+        );
+
+        transactions[_index].approvals[msg.sender] = false;
+        transactions[_index].votes--;
     }
 
     receive() external payable {
@@ -94,23 +94,21 @@ contract SharedWallet {
     function _executeTransaction(uint256 _index) private {
         Transaction memory trx = transactions[_index];
         address payable _recipient = payable(trx.recipient);
-        uint _amount = trx.amount;
-        require(trx.executed == false); // not really needed?
+        uint256 _amount = trx.amount;
+        require(trx.executed == false);
+        require(
+            address(this).balance > _amount,
+            "Balance contract not sufficient to submit transaction"
+        );
 
         transactions[_index].executed = true;
         _recipient.transfer(_amount);
+        emit executeTransaction(_recipient, _amount);
     }
 
-    // utility methods
-
     // get vote count for certain transaction
-    function getVotes(address _recipient) public view returns (uint256) {
-        uint256 voteCount;
-        for (uint256 i = 0; i < transactions.length; i++) {
-            if (transactions[i].recipient == _recipient) {
-                voteCount = transactions[i].votes;
-            }
-        }
+    function getVotes(uint256 _index) public view returns (uint256) {
+        uint256 voteCount = transactions[_index].votes;
         return voteCount;
     }
 

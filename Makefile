@@ -1,4 +1,4 @@
-.PHONY: chain deploy upgrade test lint clean
+.PHONY: chain deploy test lint clean
 include .env
 export 
 
@@ -16,29 +16,14 @@ DOCKER_PORTS=-p 8545:8545
 chain:
 	npx hardhat node --verbose
 
-# Openzeppelin
-oz.deploy: oz.accounts
-	npx oz deploy $(CONTRACT) --kind upgradeable --network $(NETWORK)
-
-oz.upgrade: # this only works for certain changes
-	npx oz upgrade $(CONTRACT) --network $(NETWORK) --no-interactive
-
-oz.accounts:
-	npx oz accounts --network $(NETWORK)
-
-# Hardhat
-hh.deploy: hh.accounts
+deploy: accounts
 	npx hardhat run --network localhost scripts/deploy.js
 
-hh.accounts: 
+accounts: 
 	npx hardhat run --network localhost scripts/accounts.js
 
-hh.test:
+test:
 	npx hardhat test
-
-# Truffle
-truffle.test:
-	truffle test test/*
 
 # Development
 lint:
@@ -46,7 +31,6 @@ lint:
 
 clean:
 	-rm -r build artifacts cache .openzeppelin/dev-*
-
 
 ### DEPLOYMENT
 build:

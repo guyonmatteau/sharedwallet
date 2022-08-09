@@ -1,6 +1,7 @@
 /** @type import('hardhat/config').HardhatUserConfig */
 require('@nomiclabs/hardhat-truffle5');
 require('@nomiclabs/hardhat-ethers');
+require("@nomiclabs/hardhat-waffle");
 
 // get required keys from .env
 const dotenv = require("dotenv");
