@@ -32,7 +32,7 @@ contract SharedWallet {
             require(owner != address(0), "Owner address cannot be null address");
             isOwner[owner] = true;
 
-            // keep track of owners for convenience
+            // keep track of owners
             owners.push(owner);
         }
     }

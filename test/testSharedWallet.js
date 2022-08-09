@@ -37,12 +37,15 @@ contract("SharedWallet", (accounts) => {
     }
   });
 
-  it("should set the owners properly", async function () {
+  it("should set the owners correct", async function () {
     const SharedWallet = await ethers.getContractFactory("SharedWallet");
     const walletInstance = await SharedWallet.deploy(deployedOwners, 1);
     const walletOwners = await walletInstance.getOwners();
 
     lodash.isEqual(walletOwners, deployedOwners)
   });
+
+  
+
 
 });
