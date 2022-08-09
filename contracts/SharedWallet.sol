@@ -3,7 +3,6 @@ pragma solidity ^0.6.3;
 pragma experimental ABIEncoderV2;
 
 contract SharedWallet {
-    // TODO currently it only supports 1 transaction per recipient
     struct Transaction {
         address recipient;
         uint256 amount;
@@ -17,13 +16,17 @@ contract SharedWallet {
 
     uint256 public minVotes;
     address[] public owners;
-    Transaction[] public pendingTransactions;
+    Transaction[] public transactions;
 
     // mapping can be used as convenient list
     mapping(address => bool) public isOwner;
 
     constructor(address[] memory _owners, uint256 _minVotes) public {
         require(_minVotes > 0, "Minimal number of votes cannot be 0");
+        require(
+            _minVotes <= _owners.length,
+            "Number of minimum votes should be smaller or equal to number of owners"
+        );
         minVotes = _minVotes;
 
         // add owners to owners list
@@ -42,32 +45,29 @@ contract SharedWallet {
     // of pending transactions
     // requirement: be authorized
     function submitTransaction(address _recipient, uint256 _amount) public {
-        Transaction memory transaction = Transaction({
+        Transaction memory trx = Transaction({
             recipient: _recipient,
             amount: _amount,
             votes: 0,
             executed: false
         });
-        pendingTransactions.push(transaction);
+        transactions.push(trx);
     }
 
-    // public function
-    // vote for certain transaction,
+    // public function to vote for transaction
     // if number of votes is equal to min number of votes,
     // execute transaction
-    // requirement: be authorized
-    function approveTransaction(address _recipient) public {
+    function approveTransaction(uint256 _index) public {
         require(isOwner[msg.sender], "Sender is not owner");
-        for (uint256 i = 0; i < pendingTransactions.length; i++) {
-            if (pendingTransactions[i].recipient == _recipient && !pendingTransactions[i].approvals[msg.sender]) {
-                // this can be done smarter
-                pendingTransactions[i].votes++;
-                pendingTransactions[i].approvals[msg.sender] = true;
-                if (pendingTransactions[i].votes >= minVotes && !pendingTransactions[i].executed) {
-                    pendingTransactions[i].executed = true;
-                    _executeTransaction(payable(pendingTransactions[i].recipient), pendingTransactions[i].amount);
-                }
-            }
+        require(transactions[_index].approvals[msg.sender] == false, "Sender already voted");
+
+        // vote and set approval
+        transactions[_index].votes++;
+        transactions[_index].approvals[msg.sender] = true;
+
+        // execute transaction if sufficient votes
+        if (transactions[_index].votes >= minVotes && !transactions[_index].executed) {
+            _executeTransaction(_index);
         }
     }
 
@@ -77,11 +77,11 @@ contract SharedWallet {
     // reuquirment: be authorized
     function revokeApproval(address _recipient) public {
         require(isOwner[msg.sender], "Sender is not owner");
-        for (uint256 i = 0; i < pendingTransactions.length; i++) {
-            if (pendingTransactions[i].recipient == _recipient && pendingTransactions[i].approvals[msg.sender]) {
+        for (uint256 i = 0; i < transactions.length; i++) {
+            if (transactions[i].recipient == _recipient && transactions[i].approvals[msg.sender]) {
                 // this can be done smarter
-                pendingTransactions[i].votes--;
-                pendingTransactions[i].approvals[msg.sender] = false;
+                transactions[i].votes--;
+                transactions[i].approvals[msg.sender] = false;
             }
         }
     }
@@ -90,9 +90,14 @@ contract SharedWallet {
         emit Deposit({_sender: msg.sender, _amount: msg.value});
     }
 
-    // private function
-    // execute transaction
-    function _executeTransaction(address payable _recipient, uint256 _amount) private {
+    // private function to execute transactions
+    function _executeTransaction(uint256 _index) private {
+        Transaction memory trx = transactions[_index];
+        address payable _recipient = payable(trx.recipient);
+        uint _amount = trx.amount;
+        require(trx.executed == false); // not really needed?
+
+        transactions[_index].executed = true;
         _recipient.transfer(_amount);
     }
 
@@ -101,9 +106,9 @@ contract SharedWallet {
     // get vote count for certain transaction
     function getVotes(address _recipient) public view returns (uint256) {
         uint256 voteCount;
-        for (uint256 i = 0; i < pendingTransactions.length; i++) {
-            if (pendingTransactions[i].recipient == _recipient) {
-                voteCount = pendingTransactions[i].votes;
+        for (uint256 i = 0; i < transactions.length; i++) {
+            if (transactions[i].recipient == _recipient) {
+                voteCount = transactions[i].votes;
             }
         }
         return voteCount;
@@ -121,7 +126,17 @@ contract SharedWallet {
         return address(this).balance;
     }
 
-    // function getTransactions() public view returns (Transaction[] memory) {
-    //     return pendingTransactions;
-    // }
+    function getTransaction(uint256 _index)
+        public
+        view
+        returns (
+            address recipient,
+            uint256 amount,
+            uint256 votes,
+            bool executed
+        )
+    {
+        Transaction memory trx = transactions[_index];
+        return (trx.recipient, trx.amount, trx.votes, trx.executed);
+    }
 }

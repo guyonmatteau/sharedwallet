@@ -4,9 +4,13 @@ const lodash = require("lodash");
 const SharedWallet = artifacts.require("SharedWallet");
 
 contract("SharedWallet", (accounts) => {
+    // Get the signer (Hardhat default)
+    const [sender] = await ethers.getSigners();
+
     let deployedOwners = accounts.slice(0, 2);
     const nullAddress = "0x0000000000000000000000000000000000000000";
 
+    // basic sanity tests
     it("should throw if any of the owners is the null address", async function () {
         const SharedWallet = await ethers.getContractFactory("SharedWallet");
 
@@ -43,5 +47,14 @@ contract("SharedWallet", (accounts) => {
         const walletOwners = await walletInstance.getOwners();
 
         lodash.isEqual(walletOwners, deployedOwners);
+    });
+
+    it("should not be possible to vote twice", async function () {
+        const SharedWallet = await ethers.getContractFactory("SharedWallet");
+        const walletInstance = await SharedWallet.deploy(deployedOwners, 1);
+
+        await walletInstance.transfer(deployedOwners[0], walletInstance.address);
+        walletInstance.submitTransaction(accounts[3], 1);
+
     });
 });
