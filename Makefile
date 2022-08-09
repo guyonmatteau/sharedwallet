@@ -1,8 +1,14 @@
 .PHONY: chain deploy upgrade test lint clean
+include .env
+export 
 
 ### GLOBALS
 CONTRACT=SharedWallet
 NETWORK=localhost
+DOCKER_IMAGE=sharedwallet
+DOCKER_TAG=$(shell git branch --show-current)
+DOCKER_ENV=-e ALCHEMY_API_KEY=$(ALCHEMY_API_KEY) -e PRIVATE_KEY=$(PRIVATE_KEY)
+DOCKER_PORTS=-p 8545:8545
 
 ### DEVELOPMENT
 
@@ -43,3 +49,9 @@ clean:
 
 
 ### DEPLOYMENT
+build:
+	docker build -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
+
+run: build 
+	@docker run -it --rm $(DOCKER_ENV) $(DOCKER_PORTS) $(DOCKER_IMAGE):$(DOCKER_TAG)
+ 

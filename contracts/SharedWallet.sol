@@ -25,7 +25,7 @@ contract SharedWallet {
     constructor(address[] memory _owners, uint256 _minVotes) public {
         require(_minVotes > 0, "Minimal number of votes cannot be 0");
         minVotes = _minVotes;
-        
+
         // add owners to owners list
         for (uint256 i = 0; i < _owners.length; i++) {
             address owner = _owners[i];
@@ -59,22 +59,13 @@ contract SharedWallet {
     function approveTransaction(address _recipient) public {
         require(isOwner[msg.sender], "Sender is not owner");
         for (uint256 i = 0; i < pendingTransactions.length; i++) {
-            if (
-                pendingTransactions[i].recipient == _recipient &&
-                !pendingTransactions[i].approvals[msg.sender]
-            ) {
+            if (pendingTransactions[i].recipient == _recipient && !pendingTransactions[i].approvals[msg.sender]) {
                 // this can be done smarter
                 pendingTransactions[i].votes++;
                 pendingTransactions[i].approvals[msg.sender] = true;
-                if (
-                    pendingTransactions[i].votes >= minVotes &&
-                    !pendingTransactions[i].executed
-                ) {
+                if (pendingTransactions[i].votes >= minVotes && !pendingTransactions[i].executed) {
                     pendingTransactions[i].executed = true;
-                    _executeTransaction(
-                        payable(pendingTransactions[i].recipient),
-                        pendingTransactions[i].amount
-                    );
+                    _executeTransaction(payable(pendingTransactions[i].recipient), pendingTransactions[i].amount);
                 }
             }
         }
@@ -87,10 +78,7 @@ contract SharedWallet {
     function revokeApproval(address _recipient) public {
         require(isOwner[msg.sender], "Sender is not owner");
         for (uint256 i = 0; i < pendingTransactions.length; i++) {
-            if (
-                pendingTransactions[i].recipient == _recipient &&
-                pendingTransactions[i].approvals[msg.sender]
-            ) {
+            if (pendingTransactions[i].recipient == _recipient && pendingTransactions[i].approvals[msg.sender]) {
                 // this can be done smarter
                 pendingTransactions[i].votes--;
                 pendingTransactions[i].approvals[msg.sender] = false;
@@ -104,9 +92,7 @@ contract SharedWallet {
 
     // private function
     // execute transaction
-    function _executeTransaction(address payable _recipient, uint256 _amount)
-        private
-    {
+    function _executeTransaction(address payable _recipient, uint256 _amount) private {
         _recipient.transfer(_amount);
     }
 
