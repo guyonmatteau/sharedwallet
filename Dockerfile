@@ -10,20 +10,18 @@ RUN apt-get update && \
     git \
     curl
 
-# Making sure we are able to run hardhad in container, not robust but fine for now
-RUN npm set strict-ssl=false  
-RUN npm config set user 0
-RUN npm config set unsafe-perm true
-
 # Install dependencies
 RUN mkdir -p /opt
 WORKDIR /opt
 COPY package.json .
+COPY yarn.lock .
+
+# Workaround for an issue with yarn and git
+RUN git config --global url."https://github.com/".insteadOf ssh://git@github.com/ && \
+    git config --global url."https://".insteadOf git://
+RUN yarn install --non-interactive --frozen-lockfile
 
 # COPY files required for deployment
 COPY hardhat.config.js .
 COPY contracts contracts
 COPY scripts scripts
-
-CMD npx hardhat node --verbose
-
