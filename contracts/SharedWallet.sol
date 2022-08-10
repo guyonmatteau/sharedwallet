@@ -46,6 +46,7 @@ contract SharedWallet {
     // of pending transactions
     // requirement: be authorized
     function submitTransaction(address _recipient, uint256 _amount) public {
+        require(isOwner[msg.sender], "Sender is not owner");
         Transaction memory trx = Transaction({
             recipient: _recipient,
             amount: _amount,
