@@ -6,7 +6,7 @@ Artemis prework assignment 1, where the goal is to develop a SharedWallet (i.e. 
 | Network | Address | Version |
 |---|---|---|
 | Goerli | [0x2c603db27E6BCfb652c8301f957640AE27c22c5E](https://goerli.etherscan.io/address/0x2c603db27E6BCfb652c8301f957640AE27c22c5E) | First |
-| Goerli | [0x2c603db27E6BCfb652c8301f957640AE27c22c5E](https://goerli.etherscan.io/address/0x2c603db27E6BCfb652c8301f957640AE27c22c5E) | Final submit |
+| Goerli | [0x934c31492AEDd0d74B22344617DA607b8e66Fcf2](https://goerli.etherscan.io/address/0x934c31492AEDd0d74B22344617DA607b8e66Fcf2) | Final submit |
 
 
 ## Development
