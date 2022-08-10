@@ -25,9 +25,12 @@ accounts:
 test:
 	npx hardhat test
 
+console:
+	npx hardhat console --network localhost
+
 # Development
 lint:
-	npx prettier --write contracts/**/*.sol test/**
+	npx prettier --write contracts/**/*.sol test/** scripts/**
 
 clean:
 	-rm -r build artifacts cache .openzeppelin/dev-*

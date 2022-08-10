@@ -1,17 +1,14 @@
 // scripts/accounts.js
-async function main () {
-
-  // Retrieve accounts from the local node
-  const accounts = await ethers.provider.listAccounts();
-  console.log(accounts);
-  return accounts;
-
-};
+async function main() {
+    // Retrieve accounts from the local node
+    const accounts = await ethers.provider.listAccounts();
+    console.log(accounts);
+    return accounts;
+}
 
 main()
-  .then(() => process.exit(0))
-  .catch(error => {
-    console.error(error);
-    process.exit(1);
-  });
-
+    .then(() => process.exit(0))
+    .catch((error) => {
+        console.error(error);
+        process.exit(1);
+    });

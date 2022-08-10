@@ -60,10 +60,6 @@ contract("SharedWallet", (accounts) => {
         });
 
         // submit a transaction
-        // const provider = waffle.provider;
-        // const initialRecipientBalance = await provider.getBalance(recipient.address);
-        // assert.equal(Number(initialRecipientBalance), 0);
-
         await walletInstance.submitTransaction(recipient.address, trxAmount);
 
         return { walletInstance, owner1, owner2, recipient, requiredVotes, trxAmount };

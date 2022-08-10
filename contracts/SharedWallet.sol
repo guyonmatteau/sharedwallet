@@ -109,16 +109,13 @@ contract SharedWallet {
 
     // get vote count for certain transaction
     function getVotes(uint256 _index) public view returns (uint256) {
+        require(_index < transactions.length, "Transaction does not exist");
         uint256 voteCount = transactions[_index].votes;
         return voteCount;
     }
 
     function getOwners() public view returns (address[] memory) {
         return owners;
-    }
-
-    function withdrawEther(address payable recipient, uint256 amount) public {
-        recipient.transfer(amount);
     }
 
     function getBalance() public view returns (uint256) {
@@ -135,6 +132,7 @@ contract SharedWallet {
             bool executed
         )
     {
+        require(_index < transactions.length, "Transaction does not exist");
         Transaction memory trx = transactions[_index];
         return (trx.recipient, trx.amount, trx.votes, trx.executed);
     }
